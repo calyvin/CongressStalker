@@ -1,0 +1,16 @@
+<% include header %>
+
+    <div class="jumbotron">
+        <h1><%= movie.title %></h1>
+        <p class="lead"><%= movie.plot %></p>
+    </div><!--div class="jumbotron"-->
+
+	<img src='<%= movie.poster %>' height="200" width ="150"></img>
+	<% Object.keys(movie).forEach(function(key){ %>
+		<% if(key!='id' && key!='poster'&key!='title'&key!='plot'){ %>
+			<h3><%= key %>: <%= movie[key] %></h3>
+		<% } %>
+	<% }); %>
+	<a href="/movies">Return to List</a>
+		
+<% include footer %>
