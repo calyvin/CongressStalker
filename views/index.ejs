@@ -1,0 +1,33 @@
+<% include header %>
+
+<html>
+<head>
+</head>
+<body>
+
+<table>
+	<% for(var i = 0; i < legislators.length; i++){%>
+	<tr><td><a href = "/legislators/<%=legislators[i].id%>"><%=legislators[i].first_name%> <%=legislators[i].last_name%></a></td></tr>
+	<% } %>
+</table>
+
+
+<form action="/legislators" method="POST">
+<h3>Search for a senator:</h3>
+ <select name="state">
+ <%for(var i=0; i<states.length; i++){%>
+   <option value=<%=states[i]%>><%=states[i]%></option>
+ <%}%>
+ </select> 
+<input type="radio" id="branchChoice1" name="branch" value="house">
+<label for="contactChoice1">House</label>
+
+<input type="radio" id="branchChoice2" name="branch" value="senate">
+<label for="contactChoice2">Senate</label>
+
+<button>Search for Legislators from a State</button>
+</form>
+</body>
+</html>
+
+<% include footer %>

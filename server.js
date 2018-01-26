@@ -6,6 +6,7 @@ var methodOverride = require('method-override');
 var urlencodedBodyParser = bodyParser.urlencoded({extended: false});
 var favicon = require('serve-favicon');
 
+
 app.use(favicon(__dirname +'/public/images/film.svg'));
 app.use(urlencodedBodyParser);
 app.use(methodOverride('_method'));

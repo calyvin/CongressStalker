@@ -1,0 +1,17 @@
+<% include header %>
+<html>
+<head>
+</head>
+<body>
+	<table>
+	<%for(let i = 0; i < data.length; i++){%>
+		<tr><td><%=data[i].name%> (<%=data[i].party%>), @<%=data[i].twitter_id%></td>
+		<td><form action="/legislators/<%= data[i].id %>"method="POST">
+			<button>Add Legislator</button>
+			</form></td></tr>
+	<%}%>
+	</table>
+</body>
+</html>
+
+<% include footer %>
