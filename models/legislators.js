@@ -16,6 +16,8 @@ addLegislator = function(leg) {
     "id": leg.member_id,
     "first_name": leg.first_name,
     "last_name": leg.last_name,
+    "party": leg.current_party,
+    "twitter_id":leg.twitter_account
   }
 
   for(let i = 0; i < legislatorData.legislators.length; i++){
@@ -27,37 +29,53 @@ addLegislator = function(leg) {
   legislatorData.counter = legislatorData.legislators.length;
   saveLegislatorData(legislatorData);
 }
-// updateMovieData = function(i, id, title, year, rating, director, actors, plot, poster, showtimes){
-//   var movieData=getMovieData();
-//   var movieList=movieData.movies;
-//   var thisMovie = movieList[i];
-//   thisMovie["id"]= id;
-//   thisMovie["title"] = title;
-//   thisMovie["year"]= year;
-//   thisMovie["rating"]= rating; 
-//   thisMovie["director"]= director;
-//   thisMovie["actors"]= actors;
-//   thisMovie["plot"]= plot;
-//   thisMovie["poster"]= poster;
-//   thisMovie["showtimes"] = showtimes.split(",");
-//   saveMovieData(movieData);
-// }
+deleteLegislator = function(legID){
+  var legislatorData = getLegislatorData();
+  var legToDelete;
+  for(var i = 0; i < legislatorData.legislators.length; i++){
+    if(legislatorData.legislators[i].id == legID) {
+      legToDelete = i;
+      break;
+    }
+  }
+  legislatorData.legislators.splice(legToDelete, 1);
+  legislatorData.counter=legislatorData.legislators.length;
+  saveLegislatorData(legislatorData);
+}
+addBill = function(bill) {
+	var legislatorData = getLegislatorData();
+  console.log(bill);
+  var newBill={
+    "id": bill.bill_id,
+    "title": bill.title
+  }
 
-// deleteMovieData = function(id){
-//   var movieData = getMovieData();
-//   var movieToDelete = movieData.movies[id];
+  for(let i = 0; i < legislatorData.bills.length; i++){
+    if(legislatorData.bills[i].id == newBill.id)
+      return;
+  }
 
-//   movieData.movies.splice(id, 1);
-  
-//   movieData.counter=movieData.movies.length;
-//   for(i=0; i< movieData.movies.length;i++){
-//     movieData.movies[i].id=i;
-//   }
+  legislatorData.bills.push(newBill);
+  saveLegislatorData(legislatorData);
+}
+deleteBill = function(billId){
+  var legislatorData = getLegislatorData();
+  var billToDelete;
+  for(var i = 0; i < legislatorData.bills.length; i++){
+    if(legislatorData.bills[i].id == billId) {
+      billToDelete = i;
+      break;
+    }
+  }
+  legislatorData.bills.splice(billToDelete, 1);
+  saveLegislatorData(legislatorData);
+}
 
-//   saveMovieData(movieData);
-// }
 exports.addLegislator = addLegislator;
+exports.deleteLegislator = deleteLegislator;
 exports.getLegislatorData = getLegislatorData;
 exports.saveLegislatorData = saveLegislatorData;
+exports.addBill = addBill;
+exports.deleteBill = deleteBill;
 // exports.updateMovieData = updateMovieData;
 // exports.deleteMovieData = deleteMovieData;

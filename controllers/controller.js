@@ -16,15 +16,13 @@ router.get('/', function(req, res){
 
 router.get('/legislators', function(req, res){
   var states_json = JSON.parse(fs.readFileSync("data/states.json"));
-  var legislators = Legislators.getLegislatorData();
-  res.render('index.ejs', {states: states_json.states, legislators: legislators.legislators});
+  var legislatorData = Legislators.getLegislatorData();
+  res.render('index.ejs', {states: states_json.states, legislators: legislatorData.legislators, bills: legislatorData.bills});
 });
 
 router.post('/legislators', function(req1, res1){
   var state=req1.body.state;
   var branch = req1.body.branch;
-  console.log(branch);
-  console.log(state);
   var options = {
     url: "https://api.propublica.org/congress/v1/members/"+branch+"/"+state+"/current.json",
     headers: {
@@ -34,7 +32,6 @@ router.post('/legislators', function(req1, res1){
 
   request(options, function(req2, res2, body){
       var propublica_data = JSON.parse(body);
-      console.log(propublica_data);
       if(propublica_data.results)
         res1.render("legislators.ejs", {data: propublica_data.results});
       else
@@ -60,14 +57,13 @@ router.get('/legislators/:id', function(req, res){
       };// request options
       request(options, function(req2, res2, body2){
         console.log(JSON.parse(body2).results[0].bills);
-        res.render("show_legislator_detail.ejs", {legislator: JSON.parse(body1).results[0]});
+        res.render("show_legislator_detail.ejs", {legislator: JSON.parse(body1).results[0], bills: JSON.parse(body2).results[0].bills});
       });
     });//request for Probulica API query
 });
 
 router.post('/legislators/:id', function(req, res){
   var legislatorID=req.params.id;
-  console.log(legislatorID)
 
   var options = {
       url: "https://api.propublica.org/congress/v1/members/"+legislatorID+".json",
@@ -77,14 +73,34 @@ router.post('/legislators/:id', function(req, res){
     };// request options
     request(options, function(req2, res2, body){
       Legislators.addLegislator(JSON.parse(body).results[0]);
-      res.redirect('/legislators'); 
+      res.redirect('/legislators');
     });//request for Probulica API query
 });
+router.delete('/legislators/:id', function(req, res){
+  Legislators.deleteLegislator(req.params.id);
+  res.redirect('/');
+});
+router.post('/bills/:id', function(req, res){
+  var billID=req.params.id.split('-')[0];
+  var billCongress = req.params.id.split('-')[1];
+  console.log("Congress: " + billCongress + "\n ID: " + billID)
+  var options = {
+      url: "https://api.propublica.org/congress/v1/"+billCongress+"/bills/"+billID+".json",
+      headers: {
+        "X-API-Key": apikey
+      }
+    };// request options
+    request(options, function(req2, res2, body){
+      // console.log(JSON.parse(body));
+      Legislators.addBill(JSON.parse(body).results[0]);
+      res.redirect('/legislators');
+    });//request for Probulica API query
+});
+router.delete('/bills/:id', function(req, res){
+  Legislators.deleteBill(req.params.id);
+  res.redirect('/');
+});
 
-// router.get('/movies', function(req, res){
-//   var movieList = Movies.getMovieData().movies;
-//   res.render('movies/show_movies.ejs', {movies: movieList});
-// });
 
 // router.post('/movies', function(req, res){
 //   //get title
@@ -113,7 +129,7 @@ router.post('/legislators/:id', function(req, res){
 
 //       if(!err){
 //         Movies.addMovie(movieResponse.Title, movieResponse.Year, movieResponse.Rated, movieResponse.Director, movieResponse.Actors, movieResponse.Plot, movieResponse.Poster, ["3:00", "5:30", "8:45"]);
-//         res.redirect('/movies'); 
+//         res.redirect('/movies');
 //       }
 //       else{
 //         res.redirect('/movies');
@@ -129,20 +145,5 @@ router.post('/legislators/:id', function(req, res){
 
 // });
 
-// router.get('/movies/:id/edit', function(req,res){
-//   var movieList=Movies.getMovieData();
-//   var thisMovie = movieList.movies[req.params.id];
-//   res.render("movies/edit_movie.ejs", {movie: thisMovie} );
-// });
-
-// router.delete('/movies/:id', function(req, res){
-//   Movies.deleteMovieData(req.params.id);
-//   res.redirect('/movies');
-// });
-
-// router.put('/movies/:id', function(req,res){
-//   Movies.updateMovieData(req.params.id, req.body.id, req.body.title, req.body.year, req.body.rating, req.body.director, req.body.actors, req.body.plot, req.body.poster, req.body.showtimes);
-//   res.redirect('/movies');
-// });
 
 module.exports = router

@@ -5,7 +5,15 @@
 <body>
 	<table>
 	<%for(let i = 0; i < data.length; i++){%>
-		<tr><td><%=data[i].name%> (<%=data[i].party%>), @<%=data[i].twitter_id%></td>
+		<style>
+		.D {
+			color: blue;
+		}
+		.R {
+			color: red;
+		}
+		</style>
+		<tr><td><a href = "/legislators/<%=data[i].id%>"><%=data[i].name%></a> (<%=data[i].party%>), <a  href = "http://www.twitter.com/<%=data[i].twitter_id%>"class = "<%=data[i].party%>">@<%=data[i].twitter_id%></a></td>
 		<td><form action="/legislators/<%= data[i].id %>"method="POST">
 			<button>Add Legislator</button>
 			</form></td></tr>

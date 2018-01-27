@@ -13,7 +13,7 @@ app.use(methodOverride('_method'));
 app.set('view_engine', 'ejs');
 app.use(express.static('public'));
 
-app.use(require('./controllers/movies'));//use the movies.js controller
+app.use(require('./controllers/controller'));//use the movies.js controller
 
 app.listen(3000, function(){
 	console.log('listening on port 3000!')

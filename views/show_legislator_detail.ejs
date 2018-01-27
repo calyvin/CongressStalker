@@ -3,7 +3,18 @@
     <div class="jumbotron">
         <h1><%= legislator.first_name %> <%= legislator.last_name%></h1>
     </div><!--div class="jumbotron"-->
-
+    <table id = "bills" style="border:1px solid black;">
+    	<th>Bills</th>
+      <tr><th>Name</th><th>Id</th></tr>
+    	<% for(var i = 0; i < bills.length; i++){%>
+    	<tr><td><%=bills[i].title%></td>
+          <td><%=bills[i].bill_id%></td>
+          <td><form action="/bills/<%= bills[i].bill_id %>"method="POST">
+      			<button>Add Bill</button>
+      			</form></td>
+    	</tr>
+    	<% } %>
+    </table>
 	<a href="/">Return to List</a>
-		
+
 <% include footer %>

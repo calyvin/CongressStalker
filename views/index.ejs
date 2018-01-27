@@ -4,22 +4,41 @@
 <head>
 </head>
 <body>
-
-<table>
+<style>.D {color: blue;}.R {color: red;}</style>
+<h3>Saved Legislators</h3>
+<table id = "saved-legislators" style="border:1px solid black;">
+	<% if(legislators.length > 0) { %>
+	<tr><th>Legislator Name</th><th>Remove Legislator</th></tr>
 	<% for(var i = 0; i < legislators.length; i++){%>
-	<tr><td><a href = "/legislators/<%=legislators[i].id%>"><%=legislators[i].first_name%> <%=legislators[i].last_name%></a></td></tr>
-	<% } %>
+	<tr><td><a href = "/legislators/<%=legislators[i].id%>"><%=legislators[i].first_name%> <%=legislators[i].last_name%></a> (<%=legislators[i].party%>), <a  href = "http://www.twitter.com/<%=legislators[i].twitter_id%>"class = "<%=legislators[i].party%>">@<%=legislators[i].twitter_id%></a></td>
+	<td><form action="/legislators/<%=legislators[i].id%>?_method=DELETE" method="POST"><button>Remove</button></form></td>
+	</tr>
+	<% }}else { %>
+		<tr><td>No Saved Legislators</td></tr>
+		<% }%>
+</table>
+<h3>Saved Bills</h3>
+<table id = "saved-bills" style="border:1px solid black;">
+	<% if(bills.length > 0) { %>
+	<tr><th>Bill Name</th><th>Bill ID</th><th>Remove Bill</th></tr>
+	<% for(var i = 0; i < bills.length; i++){%>
+	<tr><td><%=bills[i].title%></td>
+			<td><%=bills[i].id%></td>
+			<td><form action="/bills/<%=bills[i].id%>?_method=DELETE" method="POST"><button>Remove</button></form></td>
+	</tr>
+	<% }}else { %>
+		<tr><td>No Saved Bills</td></tr>
+		<% }%>
 </table>
 
-
 <form action="/legislators" method="POST">
-<h3>Search for a senator:</h3>
+<h3>Search for a legislator:</h3>
  <select name="state">
  <%for(var i=0; i<states.length; i++){%>
    <option value=<%=states[i]%>><%=states[i]%></option>
  <%}%>
- </select> 
-<input type="radio" id="branchChoice1" name="branch" value="house">
+ </select>
+<input type="radio" id="branchChoice1" name="branch" value="house" checked="checked">
 <label for="contactChoice1">House</label>
 
 <input type="radio" id="branchChoice2" name="branch" value="senate">
