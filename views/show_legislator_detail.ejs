@@ -1,7 +1,8 @@
 <% include header %>
 
     <div class="jumbotron">
-        <h1><%= legislator.first_name %> <%= legislator.last_name%></h1>
+        <img style="display:inline;" src = "https://theunitedstates.io/images/congress/225x275/<%=legislator.member_id%>.jpg" height = "275px" width = "225px"/>
+        <h1 style="display:inline;"><%= legislator.first_name %> <%= legislator.last_name%></h1>
     </div><!--div class="jumbotron"-->
     <table id = "bills" style="border:1px solid black;">
     	<th>Bills</th>

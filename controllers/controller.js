@@ -56,7 +56,7 @@ router.get('/legislators/:id', function(req, res){
         }
       };// request options
       request(options, function(req2, res2, body2){
-        console.log(JSON.parse(body2).results[0].bills);
+        console.log(JSON.parse(body1).results[0]);
         res.render("show_legislator_detail.ejs", {legislator: JSON.parse(body1).results[0], bills: JSON.parse(body2).results[0].bills});
       });
     });//request for Probulica API query
